@@ -1,5 +1,5 @@
 ```c
-1.Write a C program to create a thread that prints "Hello, World!"?
+//Write a C program to create a thread that prints "Hello, World!"?
 #include<stdio.h>
 #include<pthread.h>
 
