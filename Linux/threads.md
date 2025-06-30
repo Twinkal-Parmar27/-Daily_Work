@@ -431,3 +431,5 @@ int main()
     pthread_mutex_destroy(&lock);
 }
 
+//Implement a C program to create a thread that prints prime numbers up to a given limit
+with mutex locks?
