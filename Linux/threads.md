@@ -209,4 +209,82 @@ int main()
 }
 
 //Develop a C program to create a thread that checks if a number is prime?
+#include<stdio.h>
+#include<pthread.h>
+#include<stdbool.h>
 
+pthread_mutex_t lock;
+
+void* Prime(void* arg)
+{	
+	pthread_mutex_lock(&lock);
+	int num=*((int*)arg);
+	if(num<=1)
+	{
+		printf("%d isnot prime\n",num);
+	}
+
+bool prime=true;
+
+for(int i=2;i<=num/2;i++)
+	{
+		if(num%i==0)
+		{
+			prime=false;
+			break;
+		}
+	}
+		printf("%d is %s\n",num,prime?"prime":"not prime");
+		return NULL;
+		pthread_mutex_unlock(&lock);
+}
+
+int main()
+{
+	pthread_t thread;
+	pthread_mutex_init(&lock,NULL);
+	int Number=29;
+
+	pthread_create(&thread,NULL,Prime,&Number);
+	pthread_join(thread,NULL);
+	pthread_mutex_destroy(&lock);
+}
+
+//Implement a C program to create a thread that checks if a given string is a palindrome?
+#include<stdio.h>
+#include<string.h>
+#include<pthread.h>
+#include<stdbool.h>
+
+pthread_mutex_t lock;
+
+void* Palindrome(void* arg)
+{
+	pthread_mutex_lock(&lock);
+	char*str=(char*)arg;
+	int len=strlen(str);
+	bool flag=true;
+
+	for(int i=0;i<len/2;++i)
+	{
+		if(str[i]!=str[len-i-1])
+		{
+			flag=false;
+			break;
+		}
+	}
+	printf("%s is palindrome\n",str,flag?"a":"not a");
+	return NULL;
+	pthread_mutex_unlock(&lock);
+}
+
+int main()
+{
+	pthread_t thread;
+	pthread_mutex_init(&lock,NULL);
+	char word[]="madam";
+
+	pthread_create(&thread,NULL,Palindrome,word);
+	pthread_join(thread,NULL);
+	pthread_mutex_destroy(&lock);
+}
