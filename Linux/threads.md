@@ -125,3 +125,87 @@ int main()
 
     return 0;
 }
+
+#Develop a C program to create a thread that prints the sum of two numbers?
+#include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+
+pthread_mutex_t lock;
+void* print_sum(void* arg)
+{
+	pthread_mutex_lock(&lock);
+	int* numbers=(int*)arg;
+	int a=numbers[0];
+	int b=numbers[1];
+	printf("sum=%d\n",a+b);
+	free(numbers);
+	pthread_mutex_unlock(&lock);
+}
+int main()
+{
+	pthread_t thread;
+	pthread_mutex_init(&lock,NULL);
+	int* numbers=(int*)malloc(2*sizeof(int));
+	numbers[0]=4;
+	numbers[1]=7;
+	pthread_create(&thread,NULL,print_sum,numbers);
+	pthread_join(thread,NULL);
+	pthread_mutex_destroy(&lock);
+}
+#Implement a C program to create a thread that calculates the square of a number?
+#include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+
+pthread_mutex_t lock;
+
+void* Square(void* arg)
+{	
+	pthread_mutex_lock(&lock);
+	int num=*((int*)arg);
+	int result=num*num;
+	
+	printf("Square of %d is %d\n",num,result);
+	pthread_mutex_unlock(&lock);
+
+}
+
+int main()
+{
+	pthread_t thread;
+	pthread_mutex_init(&lock,NULL);
+	int Number=6;
+
+	pthread_create(&thread,NULL,Square,&Number);
+	pthread_join(thread,NULL);
+	pthread_mutex_destroy(&lock);
+}
+
+#Write a C program to create a thread that prints the current date and time?
+#include<stdio.h>
+#include<pthread.h>
+#include<time.h>
+
+pthread_mutex_t lock;
+
+void* Date_Time(void* arg)
+{	
+	pthread_mutex_lock(&lock);
+	time_t now=time(NULL);
+	printf("Current Date and Time:%s",ctime(&now));
+	pthread_mutex_unlock(&lock);
+
+}
+
+int main()
+{
+	pthread_t thread;
+	pthread_mutex_init(&lock,NULL);
+
+	pthread_create(&thread,NULL,Date_Time,NULL);
+	pthread_join(thread,NULL);
+	pthread_mutex_destroy(&lock);
+}
+
+#
