@@ -126,7 +126,7 @@ int main()
     return 0;
 }
 
-#Develop a C program to create a thread that prints the sum of two numbers?
+//Develop a C program to create a thread that prints the sum of two numbers?
 #include<stdio.h>
 #include<pthread.h>
 #include<stdlib.h>
@@ -153,7 +153,7 @@ int main()
 	pthread_join(thread,NULL);
 	pthread_mutex_destroy(&lock);
 }
-#Implement a C program to create a thread that calculates the square of a number?
+//Implement a C program to create a thread that calculates the square of a number?
 #include<stdio.h>
 #include<pthread.h>
 #include<stdlib.h>
@@ -182,7 +182,7 @@ int main()
 	pthread_mutex_destroy(&lock);
 }
 
-#Write a C program to create a thread that prints the current date and time?
+//Write a C program to create a thread that prints the current date and time?
 #include<stdio.h>
 #include<pthread.h>
 #include<time.h>
@@ -208,4 +208,5 @@ int main()
 	pthread_mutex_destroy(&lock);
 }
 
-#
+//Develop a C program to create a thread that checks if a number is prime?
+
