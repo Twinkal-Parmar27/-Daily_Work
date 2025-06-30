@@ -400,4 +400,34 @@ int main()
 	printf("Final output:%d\n",shared_var);
 }
 
-//
+//Develop a C program to create a thread that reads input from the user and synchronizes
+access to shared resources?
+
+#include <stdio.h>
+#include <pthread.h>
+#include <string.h>
+
+char shared_buffer[100];
+pthread_mutex_t lock;
+
+void* read_input(void* arg)
+{
+    pthread_mutex_lock(&lock);
+    printf("Enter your name: ");
+    fgets(shared_buffer, sizeof(shared_buffer), stdin);
+    pthread_mutex_unlock(&lock);
+    return NULL;
+}
+
+int main()
+{
+    pthread_t thread;
+    pthread_mutex_init(&lock, NULL);
+
+    pthread_create(&thread, NULL, read_input, NULL);
+    pthread_join(thread, NULL);
+    
+
+    pthread_mutex_destroy(&lock);
+}
+
