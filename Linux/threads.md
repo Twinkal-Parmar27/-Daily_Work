@@ -288,3 +288,116 @@ int main()
 	pthread_join(thread,NULL);
 	pthread_mutex_destroy(&lock);
 }
+
+//Implement a C program to create a thread that generates random numbers and
+synchronizes access to a shared buffer?
+#include<stdio.h>
+#include<pthread.h>
+#include<semaphore.h>
+#include<unistd.h>
+
+#define BUFFER_SIZE 5
+
+int buffer[BUFFER_SIZE];
+int count=0;
+
+pthread_mutex_t mutex;
+sem_t full, empty;
+
+void *producer(void*arg)
+{
+	for(int i=1;i<10; i++)
+	{
+		sem_wait(&empty);
+		pthread_mutex_lock(&mutex);
+
+		buffer[count++]=i;
+		printf("Produced:%d\n",i);
+
+		pthread_mutex_unlock(&mutex);
+		sem_post(&full);
+		sleep(1);
+	}
+}
+
+void *consumer(void*arg)
+{
+	for(int i=1;i<10; i++)
+	{
+		sem_wait(&full);
+		pthread_mutex_lock(&mutex);
+
+		int item=buffer[--count];
+		printf("Consumed:%d\n",item);
+
+		pthread_mutex_unlock(&mutex);
+		sem_post(&empty);
+	}
+	sleep(2);
+}
+int main()
+{
+	pthread_t prodthread,consthread;
+
+	pthread_mutex_init(&mutex,NULL);
+	sem_init(&full,0,0);
+	sem_init(&empty,0,BUFFER_SIZE);
+
+	pthread_create(&prodthread,NULL,producer,NULL);
+	pthread_create(&consthread,NULL,consumer,NULL);
+
+	pthread_join(prodthread,NULL);
+	pthread_join(consthread,NULL);
+
+	pthread_mutex_destroy(&mutex);
+	sem_destroy(&full);
+	sem_destroy(&empty);
+}
+
+//Implement a C program to create two threads that increment and decrement a shared
+variable, respectively, using mutex locks?
+#include<stdio.h>
+#include<pthread.h>
+
+pthread_mutex_t lock;
+int shared_var=0;
+
+void* increment(void*arg)
+{
+for(int i=0;i<5;i++)
+{
+	pthread_mutex_lock(&lock);
+	shared_var++;
+	printf("Increment thread:%d\n",shared_var);
+	pthread_mutex_unlock(&lock);
+}
+}
+
+void* decrement(void*arg)
+{
+for(int i=0;i<5;i++)
+{
+	pthread_mutex_lock(&lock);
+	shared_var--;
+	printf("Decrement thread;%d\n",shared_var);
+	pthread_mutex_unlock(&lock);
+}
+}
+
+int main()
+{
+	pthread_t thread1,thread2;
+	pthread_mutex_init(&lock,NULL);
+
+	pthread_create(&thread1,NULL,increment,NULL);
+	pthread_create(&thread2,NULL,decrement,NULL);
+
+	pthread_join(&thread1,NULL);
+	pthread_join(&thread2,NULL);
+
+	pthread_mutex_destroy(&lock);
+
+	printf("Final output:%d\n",shared_var);
+}
+
+//
