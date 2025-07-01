@@ -531,4 +531,37 @@ int main()
 	return 0; 
 }
 
-//
+//Write a C program to create a thread that checks if a given year is a leap year using
+dynamic programming with mutex locks?
+
+#include<stdio.h>
+#include<pthread.h>
+
+pthread_mutex_t lock;
+
+void* leap_year(void* arg)
+{
+	int year=*((int*)arg);
+	pthread_mutex_lock(&lock);
+
+	if((year%4==0 && year%100!=0)||(year%400==0))
+		printf("%d is leap year\n",year);
+	else
+		printf("%d not leap year\n",year);
+
+	pthread_mutex_unlock(&lock);
+
+}
+int main()
+{
+	pthread_t thread;
+
+	int year;
+	printf("Enter the year:");
+	scanf("%d",&year);
+
+	pthread_mutex_init(&lock,NULL);
+	pthread_create(&thread,NULL,leap_year,&year);
+	pthread_join(thread,NULL);
+	pthread_mutex_destroy(&lock);
+}
