@@ -480,3 +480,55 @@ int main()
 
     return 0;
 }
+
+//Implement a C program to create a thread that calculates the sum of Fibonacci numbers up
+to a given limit using dynamic programming with mutex locks?
+
+#include<stdio.h>
+#include<pthread.h>
+#include<stdlib.h>
+
+
+pthread_mutex_t lock;
+
+int sum=0;
+
+void* fibonacci(void* arg)
+{	
+	pthread_mutex_lock(&lock);
+	int a = 0, b = 1, c = 0;
+
+    printf("Fibonacci series up to 100: \n");
+    printf("%d %d ", a, b);
+    sum=a+b; 
+
+    while (1) 
+    {
+        c = a + b;  
+        if (c > 100) 
+        {
+            break;  
+        }
+        printf("%d ", c);
+        sum=sum+c;
+        a = b;  
+        b = c;
+    }
+    printf("\n");
+    
+	pthread_mutex_unlock(&lock);
+}
+
+int main()
+{
+	pthread_t thread;
+	
+	pthread_mutex_init(&lock, NULL); 
+	pthread_create(&thread, NULL,fibonacci, NULL); 
+	pthread_join(thread, NULL); 
+	pthread_mutex_destroy(&lock); 
+	printf("Sum of Fibonacci numbers= %d\n", sum); 
+	return 0; 
+}
+
+//
